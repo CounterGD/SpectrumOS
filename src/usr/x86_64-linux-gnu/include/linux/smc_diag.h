@@ -1,0 +1,1 @@
+../../../include/linux/smc_diag.h

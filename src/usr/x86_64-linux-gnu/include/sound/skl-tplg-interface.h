@@ -1,0 +1,1 @@
+../../../include/sound/skl-tplg-interface.h
