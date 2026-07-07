@@ -1,0 +1,1 @@
+../../../include/linux/rkisp1-config.h

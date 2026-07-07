@@ -1,0 +1,1 @@
+../../../include/sound/emu10k1.h
