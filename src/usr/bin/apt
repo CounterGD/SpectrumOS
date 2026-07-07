@@ -1,0 +1,400 @@
+#!/bin/sh
+
+WGET="/bin/busybox wget --no-check-certificate"
+DPKG="/usr/bin/dpkg"
+STATUS_DB="/var/lib/dpkg/status"
+APT_LISTS_DIR="/var/lib/apt/lists"
+APT_ARCHIVE_DIR="/var/cache/apt/archives"
+SOURCES_LIST="/etc/apt/sources.list"
+
+error() { echo "E: $*" >&2; }
+info()  { echo "I: $*"; }
+
+ensure_dirs() {
+    for d in "$APT_LISTS_DIR/partial" "$APT_ARCHIVE_DIR/partial"; do
+        [ -d "$d" ] || mkdir -p "$d" 2>/dev/null || { error "Could not create $d"; exit 1; }
+    done
+}
+
+wget_download() {
+    url="$1" out="$2"
+    $WGET -q -O "$out" "$url" && [ -s "$out" ]
+}
+
+parse_sources() {
+    while IFS= read -r line; do
+        line="${line%%#*}"
+        line="$(printf '%s' "$line" | tr -s ' \t' ' ' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+        [ -z "$line" ] && continue
+        set -- $line
+        [ "$1" = "deb" ] || continue
+        url="$2"
+        case "$url" in
+            \[*) url="$3"; dist="$4"; shift 4 ;;
+            *)   dist="$3"; shift 3 ;;
+        esac
+        echo "deb|$url|$dist|$*"
+    done
+}
+
+pkg_list_files() {
+    ls "$APT_LISTS_DIR"/*_Packages 2>/dev/null
+}
+
+get_repo_url() {
+    while IFS= read -r line; do
+        line="${line%%#*}"
+        line="$(printf '%s' "$line" | tr -s ' \t' ' ' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+        [ -z "$line" ] && continue
+        set -- $line
+        [ "$1" = "deb" ] || continue
+        case "$2" in
+            \[*) echo "$3" ;;
+            *)   echo "$2" ;;
+        esac
+        return 0
+    done < "$SOURCES_LIST"
+}
+
+cmd_update() {
+    ensure_dirs
+    n=0
+
+    tmpdir="/tmp/apt-update-$$"
+    mkdir -p "$tmpdir"
+
+    parse_sources < "$SOURCES_LIST" > "$tmpdir/sources"
+    [ -d "/etc/apt/sources.list.d" ] && for sf in /etc/apt/sources.list.d/*.list; do
+        [ -f "$sf" ] && parse_sources < "$sf" >> "$tmpdir/sources" 2>/dev/null
+    done
+
+    while IFS='|' read -r type url dist components; do
+        n=$((n + 1))
+        info "Get:$n $dist $components"
+
+        safe="$(echo "$url" | sed 's|https\?://||;s|/|_|g')"
+
+        rel_url="$url/dists/$dist/Release"
+        rel_file="$tmpdir/Release"
+        if wget_download "$rel_url" "$rel_file"; then
+            cp "$rel_file" "${APT_LISTS_DIR}/${safe}_${dist}_Release" 2>/dev/null
+        else
+            info "  Skipping $dist (could not fetch Release)"
+            continue
+        fi
+
+        for comp in $components; do
+            ok=0
+            for arch in "amd64" "all"; do
+                for ext in "xz" "gz"; do
+                    pkg_url="$url/dists/$dist/$comp/binary-$arch/Packages.$ext"
+                    pkg_file="$tmpdir/Packages_${comp}_${arch}.${ext}"
+                    pkg_out="${APT_LISTS_DIR}/${safe}_${dist}_${comp}_binary-${arch}_Packages"
+
+                    if wget_download "$pkg_url" "$pkg_file"; then
+                        case "$ext" in
+                            gz) busybox gunzip -c "$pkg_file" > "$pkg_out" 2>/dev/null ;;
+                            xz) busybox xz -dc "$pkg_file" > "$pkg_out" 2>/dev/null ;;
+                        esac
+                        if [ -s "$pkg_out" ]; then
+                            count=$(wc -l < "$pkg_out")
+                            info "  OK $comp/$arch ($((count / 10)) packages)"
+                            ok=1; break
+                        fi
+                    fi
+                done
+                [ "$ok" -eq 1 ] && break
+            done
+            [ "$ok" -eq 0 ] && info "  WARNING: $comp - no Packages file found"
+        done
+    done < "$tmpdir/sources"
+
+    rm -rf "$tmpdir"
+    info "Done updating package lists"
+}
+
+cmd_install() {
+    [ $# -eq 0 ] && { error "No package name provided"; echo "Usage: apt install <package>..."; exit 1; }
+    ensure_dirs
+
+    repo_url=$(get_repo_url)
+    [ -z "$repo_url" ] && { error "No repository found in sources.list"; exit 1; }
+
+    for pkg in "$@"; do
+        case "$pkg" in
+            /*|./*|../*)
+                if [ -f "$pkg" ]; then
+                    info "Installing local package $pkg..."
+                    cp "$pkg" "$APT_ARCHIVE_DIR/" 2>/dev/null
+                    "$DPKG" -i "$pkg" 2>&1 || {
+                        rc=$?
+                        error "Failed to install $pkg (dpkg exit code $rc)"
+                        exit $rc
+                    }
+                else
+                    error "File $pkg not found"
+                    exit 1
+                fi
+                continue
+                ;;
+        esac
+        info "Looking for package $pkg"
+        found=0
+
+        for f in $(pkg_list_files); do
+            [ -f "$f" ] || continue
+            pkg_version=""; pkg_filename=""; in_pkg=0
+            while IFS= read -r line; do
+                case "$line" in
+                    "Package: $pkg") in_pkg=1; pkg_version=""; pkg_filename="" ;;
+                    "Package: "*)
+                        [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ] && break
+                        in_pkg=0
+                        ;;
+                    "Version: "*)
+                        [ "$in_pkg" -eq 1 ] && pkg_version="${line#Version: }"
+                        ;;
+                    "Filename: "*)
+                        [ "$in_pkg" -eq 1 ] && pkg_filename="${line#Filename: }"
+                        ;;
+                    "")
+                        [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ] && break
+                        in_pkg=0
+                        ;;
+                esac
+            done < "$f"
+            if [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ]; then
+                found=1
+                break
+            fi
+        done
+
+        [ "$found" -eq 0 ] && { error "Package $pkg not found. Run 'apt update' first."; exit 1; }
+
+        full_url="${repo_url}/${pkg_filename}"
+        deb_name="${pkg_filename##*/}"
+        deb_file="/tmp/${deb_name}"
+
+        info "Downloading $pkg ($pkg_version)..."
+        if ! wget_download "$full_url" "$deb_file"; then
+            error "Failed to download $pkg from $full_url"
+            rm -f "$deb_file"
+            exit 1
+        fi
+
+        cp "$deb_file" "$APT_ARCHIVE_DIR/" 2>/dev/null
+        info "Installing $pkg..."
+        "$DPKG" -i "$deb_file" 2>&1 || {
+            rc=$?
+            error "Failed to install $pkg (dpkg exit code $rc)"
+            rm -f "$deb_file"
+            exit $rc
+        }
+        rm -f "$deb_file"
+    done
+    info "Done installing packages"
+}
+
+cmd_remove() {
+    [ $# -eq 0 ] && { error "No package name provided"; echo "Usage: apt remove <package>..."; exit 1; }
+    for pkg in "$@"; do
+        info "Removing $pkg..."
+        "$DPKG" -r "$pkg" 2>&1 || error "Failed to remove $pkg"
+    done
+    info "Done removing packages"
+}
+
+cmd_purge() {
+    [ $# -eq 0 ] && { error "No package name provided"; echo "Usage: apt purge <package>..."; exit 1; }
+    for pkg in "$@"; do
+        info "Purging $pkg..."
+        "$DPKG" -P "$pkg" 2>&1 || error "Failed to purge $pkg"
+    done
+    info "Done purging packages"
+}
+
+cmd_upgrade() {
+    ensure_dirs
+    [ -f "$STATUS_DB" ] || { info "No packages installed"; return; }
+
+    upgradable=""
+    inst_pkgs=$(sed -n '/^Package: /{s/^Package: //;h};/^Status: install ok installed/{g;p}' "$STATUS_DB")
+
+    for inst_pkg in $inst_pkgs; do
+        [ -z "$inst_pkg" ] && continue
+        inst_ver=$(sed -n "/^Package: $inst_pkg\$/,/^$/p" "$STATUS_DB" | sed -n 's/^Version: //p')
+        cand_ver=""
+        for f in $(pkg_list_files); do
+            [ -f "$f" ] || continue
+            cand_ver=$(sed -n "/^Package: $inst_pkg\$/,/^$/p" "$f" | sed -n 's/^Version: //p')
+            [ -n "$cand_ver" ] && break
+        done
+        [ -n "$cand_ver" ] && [ "$cand_ver" != "$inst_ver" ] && {
+            info "  $inst_pkg: $inst_ver -> $cand_ver"
+            upgradable="$upgradable $inst_pkg"
+        }
+    done
+
+    [ -z "$upgradable" ] && { info "All packages are up to date"; return; }
+    info "The following packages will be upgraded:${upgradable}"
+    cmd_install $upgradable
+}
+
+cmd_list() {
+    show_installed=0
+    for arg in "$@"; do [ "$arg" = "--installed" ] && show_installed=1; done
+
+    if [ "$show_installed" -eq 1 ]; then
+        [ -f "$STATUS_DB" ] || return
+        printf "%-30s %-20s %s\n" "Package" "Version" "Description"
+        echo "----------------------------------------------------------------"
+        sed -n '/^Package: /{N;N;/Status: install ok installed/{s/^Package: //;s/\nVersion: /|/;s/\n.*Description: /|/;p}}' "$STATUS_DB" | \
+        while IFS='|' read -r name ver desc; do
+            printf "%-30s %-20s %s\n" "$name" "$ver" "$desc"
+        done
+    else
+        printf "%-30s %-20s %-10s %s\n" "Package" "Version" "Status" "Description"
+        echo "----------------------------------------------------------------------"
+        for f in $(pkg_list_files); do
+            [ -f "$f" ] || continue
+            pkg_name=""; pkg_version=""; pkg_desc=""
+            while IFS= read -r line; do
+                case "$line" in
+                    "Package: "*) pkg_name="${line#Package: }" ;;
+                    "Version: "*) pkg_version="${line#Version: }" ;;
+                    "Description: "*) pkg_desc="${line#Description: }" ;;
+                    "")
+                        if [ -n "$pkg_name" ]; then
+                            grep -q "^Package: $pkg_name\$" "$STATUS_DB" 2>/dev/null && \
+                            grep -q "Status: install ok installed" "$STATUS_DB" 2>/dev/null && \
+                            status="installed" || status="available"
+                            printf "%-30s %-20s %-10s %s\n" "$pkg_name" "$pkg_version" "$status" "${pkg_desc:-}"
+                        fi
+                        pkg_name=""; pkg_version=""; pkg_desc=""
+                        ;;
+                esac
+            done < "$f"
+        done
+    fi
+}
+
+cmd_search() {
+    [ $# -eq 0 ] && { error "Search pattern required"; echo "Usage: apt search <pattern>"; exit 1; }
+    pattern="$1"; found=0
+    for f in $(pkg_list_files); do
+        [ -f "$f" ] || continue
+        pkg=""; desc=""
+        while IFS= read -r line; do
+            case "$line" in
+                "Package: "*) pkg="${line#Package: }" ;;
+                "Description: "*) desc="${line#Description: }" ;;
+                "")
+                    [ -n "$pkg" ] && case "$pkg" in *"$pattern"*)
+                        echo "$pkg - $desc"
+                        found=$((found + 1))
+                    esac
+                    pkg=""; desc=""
+                    ;;
+            esac
+        done < "$f"
+    done
+    [ "$found" -eq 0 ] && warn "No packages found matching '$pattern'" || info "Found $found packages"
+}
+
+cmd_show() {
+    [ $# -eq 0 ] && { error "No package name provided"; echo "Usage: apt show <package>"; exit 1; }
+    found=0
+    for db in "$STATUS_DB" $(pkg_list_files); do
+        [ -f "$db" ] || continue
+        in_target=0
+        while IFS= read -r line; do
+            case "$line" in
+                "Package: $1") in_target=1; found=1; echo "$line" ;;
+                "Package: "*)
+                    [ "$in_target" -eq 1 ] && echo ""
+                    in_target=0
+                    ;;
+                "")
+                    [ "$in_target" -eq 1 ] && echo ""
+                    [ "$in_target" -eq 1 ] && [ "$db" = "$STATUS_DB" ] && break
+                    in_target=0
+                    ;;
+                *) [ "$in_target" -eq 1 ] && echo "$line" ;;
+            esac
+        done < "$db"
+        [ "$found" -eq 1 ] && break
+    done
+    [ "$found" -eq 0 ] && error "Package $1 not found"
+}
+
+cmd_autoremove() {
+    info "Checking for auto-removable packages..."
+    auto_pkgs=$(sed -n '/^Package: /{s/^Package: //;h};/^Auto-Installed: yes/{g;p}' "$STATUS_DB" 2>/dev/null)
+    [ -z "$auto_pkgs" ] && { info "No packages to remove"; return; }
+    info "Packages to remove: $auto_pkgs"
+    for pkg in $auto_pkgs; do
+        "$DPKG" -r "$pkg" 2>&1 || warn "Failed to remove $pkg"
+    done
+    info "Done"
+}
+
+cmd_clean() {
+    info "Cleaning package cache..."
+    rm -f "$APT_ARCHIVE_DIR"/*.deb 2>/dev/null
+    info "Done"
+}
+
+cmd_autoclean() {
+    info "Removing obsolete package files..."
+    for f in "$APT_ARCHIVE_DIR"/*.deb; do
+        [ -f "$f" ] || continue
+        pkg="${f##*/}"; pkg="${pkg%%_*}"
+        grep -q "^Package: $pkg\$" "$STATUS_DB" 2>/dev/null || {
+            rm -f "$f"
+            info "  Removed $pkg"
+        }
+    done
+    info "Done"
+}
+
+cmd_help() {
+    cat << 'HELP'
+Usage: apt [options] <command> [arguments]
+
+Commands:
+  update            - Update package lists from repositories
+  install <pkg>...  - Install package(s)
+  remove <pkg>...   - Remove package(s)
+  purge <pkg>...    - Remove package(s) and config files
+  upgrade           - Upgrade all installed packages
+  list              - List available packages
+  list --installed  - List installed packages
+  search <pattern>  - Search for packages
+  show <pkg>        - Show package details
+  autoremove        - Remove auto-installed unused packages
+  clean             - Clear downloaded package cache
+  autoclean         - Remove obsolete package files
+  help              - Show this help message
+HELP
+}
+
+main() {
+    [ $# -eq 0 ] && { cmd_help; exit 0; }
+    case "$1" in
+        update) cmd_update ;;
+        install) shift; cmd_install "$@" ;;
+        remove) shift; cmd_remove "$@" ;;
+        purge) shift; cmd_purge "$@" ;;
+        upgrade) cmd_upgrade ;;
+        list) shift; cmd_list "$@" ;;
+        search) shift; cmd_search "$@" ;;
+        show) shift; cmd_show "$@" ;;
+        autoremove) cmd_autoremove ;;
+        clean) cmd_clean ;;
+        autoclean) cmd_autoclean ;;
+        help|--help|-h) cmd_help ;;
+        *) error "Unknown command: $1"; cmd_help; exit 1 ;;
+    esac
+}
+
+main "$@"
