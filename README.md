@@ -1,5 +1,5 @@
 # SpectrumOS
-A basic Linux distribution packed in initramfs
+A basic Linux distribution packed in initramfs.
 
 - crediting to @intoxicatinq (User ID: 1421392087978475582) on Discord for helping me decide the username and hostname
 - crediting to Chessdash543 (contributing soon) for making the distribution Debian-based (WIP)
