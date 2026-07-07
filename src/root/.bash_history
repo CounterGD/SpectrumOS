@@ -70,3 +70,12 @@ mkdir tmp
 ls tmp
 dpkg -i tmp/pkg.deb 
 exit
+dpkg -i tmp/pkg.deb 
+nano /etc/bash.bashrc
+dpkg -i tmp/pkg.deb 
+nano /etc/profile
+exit
+dpkg -i tmp/pkg.deb 
+echo $PATH
+nano /root/.bashrc
+exit
