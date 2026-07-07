@@ -5,6 +5,6 @@ A basic Linux distribution packed in initramfs
 
 how to run the distribution:
 - compile a Linux kernel or take one from ur Linux installation
-- run QEMU with -m 2G and -initrd rootfs.cpio.gz and -append "console=ttyS0 rdinit=/init" and -kernel <path/to/kernel/image>
+- run QEMU with -m 2G and -initrd rootfs.cpio.gz and -append "console=ttyS0 rdinit=/init" and -kernel <path/to/kernel/image> (make sure to be in a Terminal, bcuz QEMU only)
 - wait for the initramfs to load
 - enjoy
