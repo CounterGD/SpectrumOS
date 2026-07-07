@@ -10,3 +10,5 @@ how to run the distribution:
 - run QEMU with -m 2G and -initrd rootfs.cpio.gz and -append "console=ttyS0 rdinit=/init" and -kernel <path/to/kernel/image> (make sure to be in a Terminal, bcuz QEMU only)
 - wait for the initramfs to load
 - enjoy
+
+```f0a4365a5f20374c10a64377641c30c595677696353527d79cf764638b01e3ab  rootfs.cpio.gz```
