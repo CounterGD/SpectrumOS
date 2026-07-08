@@ -9,7 +9,7 @@
 - run QEMU with this example command and enjoy:
 ```qemu-system-x86_64 \
     -kernel arch/x86/boot/bzImage \
-    -initrd initramfs.cpio.gz \
+    -initrd rootfs.cpio.gz \
     -append "console=ttyS0 rdinit=/init loglevel=7" \
     -m 1024 \
     -nographic```
