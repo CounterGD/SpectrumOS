@@ -13,4 +13,4 @@ qemu-system-x86_64 \
     -initrd rootfs.cpio.gz \
     -append "console=ttyS0 rdinit=/init loglevel=7" \
     -m 1024 \
-    -nographic```
+    -nographic
