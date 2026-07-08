@@ -54,10 +54,7 @@
         },
         "memory",
         "physicalmemory",
-        {
-            "type": "swap",
-            "separate": true
-        },
+        "swap",
         "disk",
         "btrfs",
         "zpool",
@@ -109,7 +106,6 @@
         },
         "tpm",
         "version",
-        "logo",
         "break",
         "colors"
     ]

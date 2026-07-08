@@ -176,3 +176,89 @@ apt install ./tmp/pkg.deb
 apt install ./tmp/pkg.deb 
 apt update
 exit
+ip addr
+ip route
+apt update
+ping -c 4 192.168.0.75
+ping -c 4 8.8.8.8
+apt update
+ping archlinux.org
+apt update
+cat /etc/apt/sources.list
+dpkg --print-architecture
+apt-config dump | grep Architecture
+uname -m
+which apt
+ls -l $(which apt)
+apt --version
+file /usr/bin/apt
+strings /usr/bin/apt | head -30
+bash-5.3# file /usr/bin/apt
+/usr/bin/apt:  POSIX shell script, ASCII text executable
+bash-5.3# strings /usr/bin/apt | head -30
+#!/bin/sh
+WGET="/bin/busybox wget --no-check-certificate"
+DPKG="/usr/bin/dpkg"
+STATUS_DB="/var/lib/dpkg/status"
+APT_LISTS_DIR="/var/lib/apt/lists"
+APT_ARCHIVE_DIR="/var/cache/apt/archives"
+SOURCES_LIST="/etc/apt/sources.list"
+error() { echo "E: $*" >&2; }
+info()  { echo "I: $*"; }
+ensure_dirs() {     for d in "$APT_LISTS_DIR/partial" "$APT_ARCHIVE_DIR/partial"; do         [ -d "$d" ] || mkdir -p "$d" 2>/dev/null || { error "Could not create $d"; exit 1; };     done; wget_download() {     url="$1" out="$2";     $WGET -q -O "$out" "$url" && [ -s "$out" ]; parse_sources() {     while IFS= read -r line; do         line="${line%%#*}";         line="$(printf '%s' "$line" | tr -s ' \t' ' ' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')";         [ -z "$line" ] && continue;         set -- $line;         [ "$1" = "deb" ] || continue;         url="$2";         case "$url" in             \[*) url="$3"; dist="$4"; shift 4 ;;             *)   dist="$3"; shift 3 ;;         esac;         echo "deb|$url|$dist|$*";     done
+bash-5.3# file /usr/bin/apt
+/usr/bin/apt:  POSIX shell script, ASCII text executable
+bash-5.3# strings /usr/bin/apt | head -30
+#!/bin/sh
+WGET="/bin/busybox wget --no-check-certificate"
+DPKG="/usr/bin/dpkg"
+STATUS_DB="/var/lib/dpkg/status"
+APT_LISTS_DIR="/var/lib/apt/lists"
+APT_ARCHIVE_DIR="/var/cache/apt/archives"
+SOURCES_LIST="/etc/apt/sources.list"
+error() { echo "E: $*" >&2; }
+info()  { echo "I: $*"; }
+ensure_dirs() {     for d in "$APT_LISTS_DIR/partial" "$APT_ARCHIVE_DIR/partial"; do         [ -d "$d" ] || mkdir -p "$d" 2>/dev/null || { error "Could not create $d"; exit 1; };     done; wget_download() {     url="$1" out="$2";     $WGET -q -O "$out" "$url" && [ -s "$out" ]; parse_sources() {     while IFS= read -r line; do         line="${line%%#*}";         line="$(printf '%s' "$line" | tr -s ' \t' ' ' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')";         [ -z "$line" ] && continue;         set -- $line;         [ "$1" = "deb" ] || continue;         url="$2";         case "$url" in             \[*) url="$3"; dist="$4"; shift 4 ;;             *)   dist="$3"; shift 3 ;;         esac;         echo "deb|$url|$dist|$*"
+wget -S -O - http://deb.debian.org/debian/dists/trixie/Release
+wget -S -O - http://deb.debian.org/debian/dists/trixie/main/binary-amd64/Packages.gz
+file /usr/bin/apt
+strings /usr/bin/apt | grep -i apt
+grep -n "wget\|Packages\|Release\|dists" /usr/bin/apt
+sed -n '1,250p' /usr/bin/apt
+wget -S -O /dev/null http://deb.debian.org/debian/dists/trixie/main/binary-amd64/Packages.gz
+wget -S -O /dev/null http://deb.debian.org/debian/dists/trixie/main/binary-amd64/Packages.gz
+sh -x /usr/bin/apt update
+apt install fastfetch
+nano /usr/bin/apt
+sh -x /usr/bin/apt update
+apt update
+apt install fastfetch
+fastfetch
+dpkg -l libc6 libyyjson0 fastfetch
+apt install libc6 libyyjson0
+ls -ld /bin /lib /sbin /usr/bin
+mv /bin /bin.old
+mv /sbin /sbin.old
+mv /lib /lib.old
+mkdir /bin /sbin /lib
+cp -a /bin.old/* /usr/bin/
+cp -a /sbin.old/* /usr/sbin/
+cp -a /lib.old/* /usr/lib/
+rm -rf /bin.old /sbin.old /lib.old
+ln -s usr/bin /bin
+ln -s usr/sbin /sbin
+ln -s usr/lib /lib
+exit
+apt update
+apt install fastfetch
+which tar
+tar --version
+apt install tar
+dpkg -i /tmp/tar_1.35-1_amd64.deb
+PWD
+pwd
+ls
+dpkg -i /tmp/tar_1.34+dfsg-1.2+deb12u1_amd64.deb
+dpkg -i /tmp/tar_1.34+dfsg-1.2+deb12u1_amd64.deb
+apt install fastfetch
+exit

@@ -3,12 +3,7 @@
     "display": {
         "size": {
             "maxPrefix": "MB",
-            "ndigits": 0,
-            "spaceBeforeUnit": "never"
-        },
-        "freq": {
-            "ndigits": 3,
-            "spaceBeforeUnit": "never"
+            "ndigits": 0
         }
     },
     "modules": [
@@ -21,10 +16,7 @@
             "format": "{release}"
         },
         "uptime",
-        {
-            "type": "packages",
-            "combined": true
-        },
+        "packages",
         "shell",
         {
             "type": "display",
@@ -44,12 +36,11 @@
         "cpu",
         {
             "type": "gpu",
-            "key": "GPU",
-            "format": "{name}"
+            "key": "GPU"
         },
         {
             "type": "memory",
-            "format": "{used} / {total}"
+            "format": "{} / {}"
         },
         "break",
         "colors"

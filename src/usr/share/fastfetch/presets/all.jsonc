@@ -52,10 +52,7 @@
         },
         "memory",
         "physicalmemory",
-        {
-            "type": "swap",
-            "separate": true
-        },
+        "swap",
         "disk",
         "btrfs",
         "zpool",

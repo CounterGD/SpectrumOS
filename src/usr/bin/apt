@@ -17,8 +17,9 @@ ensure_dirs() {
 }
 
 wget_download() {
-    url="$1" out="$2"
-    $WGET -q -O "$out" "$url" && [ -s "$out" ]
+    local_url="$1"
+    out="$2"
+    $WGET -q -O "$out" "$local_url" && [ -s "$out" ]
 }
 
 parse_sources() {

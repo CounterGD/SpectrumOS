@@ -12,11 +12,10 @@
             "type": ["bar", "hide-others"]
         },
         "bar": {
-            "border": null,
-            "char": {
-                "elapsed": "█",
-                "total": "░"
-            },
+            "borderLeft": "",
+            "borderRight": "",
+            "charElapsed": "█",
+            "charTotal": "░",
             "width": 40
         },
         "constants": [
