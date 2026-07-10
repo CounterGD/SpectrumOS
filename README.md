@@ -5,7 +5,7 @@
 - a user on Discord
 # How to run
 - install QEMU via your preferred package manager
-- download the RootFS and build a custom kernel with supports for systemd (we will intergrate systemd soon)
+- download the RootFS and build a custom kernel with supports for systemd (now distributed in src/, clone this repository and find a solution to repack the RootFS)
 - run QEMU with this example command and enjoy:
 ```
 qemu-system-x86_64 \
