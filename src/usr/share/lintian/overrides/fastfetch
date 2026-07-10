@@ -1,2 +1,0 @@
-# accessing dpkg database is part of package's functionality
-uses-dpkg-database-directly [usr/bin/fastfetch]

@@ -8,6 +8,7 @@ APT_ARCHIVE_DIR="/var/cache/apt/archives"
 SOURCES_LIST="/etc/apt/sources.list"
 
 error() { echo "E: $*" >&2; }
+warn()  { echo "W: $*" >&2; }
 info()  { echo "I: $*"; }
 
 ensure_dirs() {
@@ -114,12 +115,134 @@ cmd_update() {
     info "Done updating package lists"
 }
 
+is_installed() {
+    grep -q "^Package: $1\$" "$STATUS_DB" 2>/dev/null && \
+    grep -q "Status: install ok installed" "$STATUS_DB" 2>/dev/null
+}
+
+extract_depends() {
+    for f in $(pkg_list_files); do
+        val=$(sed -n "/^Package: $1\$/,/^$/p" "$f" | sed -n 's/^Depends: //p')
+        [ -n "$val" ] && { echo "$val"; return 0; }
+    done
+    return 1
+}
+
+install_pkg() {
+    pkg="$1"
+    is_installed "$pkg" && return 0
+
+    found=0; pkg_filename=""; pkg_version=""
+    for f in $(pkg_list_files); do
+        [ -f "$f" ] || continue
+        in_pkg=0
+        while IFS= read -r line; do
+            case "$line" in
+                "Package: $pkg") in_pkg=1; pkg_version=""; pkg_filename="" ;;
+                "Package: "*)
+                    [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ] && break
+                    in_pkg=0
+                    ;;
+                "Version: "*)
+                    [ "$in_pkg" -eq 1 ] && pkg_version="${line#Version: }"
+                    ;;
+                "Filename: "*)
+                    [ "$in_pkg" -eq 1 ] && pkg_filename="${line#Filename: }"
+                    ;;
+                "")
+                    [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ] && break
+                    in_pkg=0
+                    ;;
+            esac
+        done < "$f"
+        if [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ]; then
+            found=1
+            break
+        fi
+    done
+
+    [ "$found" -eq 0 ] && { error "Package $pkg not found."; exit 1; }
+
+    full_url="${repo_url}/${pkg_filename}"
+    deb_name="${pkg_filename##*/}"
+    deb_file="/tmp/${deb_name}"
+
+    info "Downloading $pkg (${pkg_version:-unknown})..."
+    if ! wget_download "$full_url" "$deb_file"; then
+        error "Failed to download $pkg"
+        rm -f "$deb_file"
+        exit 1
+    fi
+
+    cp "$deb_file" "$APT_ARCHIVE_DIR/" 2>/dev/null
+    info "Installing $pkg..."
+    "$DPKG" -i "$deb_file" 2>&1 || {
+        rc=$?
+        error "Failed to install $pkg (dpkg exit code $rc)"
+        rm -f "$deb_file"
+        exit $rc
+    }
+    rm -f "$deb_file"
+}
+
+resolve_deps() {
+    pkg="$1"
+    grep -qx "$pkg" "$MARKED_FILE" 2>/dev/null && return 0
+    echo "$pkg" >> "$MARKED_FILE"
+
+    deps=$(extract_depends "$pkg")
+    [ -z "$deps" ] && return 0
+
+    for f in $(ls "$APT_LISTS_DIR"/*_Packages 2>/dev/null); do
+        pkg_files="$pkg_files${pkg_files:+ }$f"
+    done
+
+    dep_list=$(printf '%s\n' "$deps" | sed 's/, */,/g' | tr ',' '\n')
+
+    newline_only='
+'
+    old_ifs="$IFS"; IFS="$newline_only"
+    for dep_group in $dep_list; do
+        IFS="$old_ifs"
+        dep_group="$(printf '%s' "$dep_group" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+        [ -z "$dep_group" ] && continue
+
+        found=0
+        for alt in $(printf '%s' "$dep_group" | tr '|' '\n'); do
+            alt_name="$(printf '%s' "$alt" | sed 's/[[:space:]]*([^)]*)[[:space:]]*//g; s/^[[:space:]]*//;s/[[:space:]]*$//')"
+            [ -z "$alt_name" ] && continue
+            is_installed "$alt_name" && { found=1; break; }
+            grep -qx "$alt_name" "$MARKED_FILE" 2>/dev/null && { found=1; break; }
+        done
+        [ "$found" -eq 1 ] && continue
+
+        for alt in $(printf '%s' "$dep_group" | tr '|' '\n'); do
+            alt_name="$(printf '%s' "$alt" | sed 's/[[:space:]]*([^)]*)[[:space:]]*//g; s/^[[:space:]]*//;s/[[:space:]]*$//')"
+            [ -z "$alt_name" ] && continue
+            for pkg_f in $pkg_files; do
+                if grep -q "^Package: $alt_name\$" "$pkg_f" 2>/dev/null; then
+                    resolve_deps "$alt_name"
+                    install_pkg "$alt_name"
+                    found=1; break
+                fi
+            done
+            [ "$found" -eq 1 ] && break
+        done
+        [ "$found" -eq 0 ] && warn "Unresolved dependency '$dep_group' for $pkg"
+        IFS="$newline_only"
+    done
+    IFS="$old_ifs"
+}
+
 cmd_install() {
     [ $# -eq 0 ] && { error "No package name provided"; echo "Usage: apt install <package>..."; exit 1; }
     ensure_dirs
 
     repo_url=$(get_repo_url)
     [ -z "$repo_url" ] && { error "No repository found in sources.list"; exit 1; }
+
+    MARKED_FILE="/tmp/apt-marked-$$"
+    > "$MARKED_FILE"
 
     for pkg in "$@"; do
         case "$pkg" in
@@ -139,60 +262,14 @@ cmd_install() {
                 continue
                 ;;
         esac
-        info "Looking for package $pkg"
-        found=0
-
-        for f in $(pkg_list_files); do
-            [ -f "$f" ] || continue
-            pkg_version=""; pkg_filename=""; in_pkg=0
-            while IFS= read -r line; do
-                case "$line" in
-                    "Package: $pkg") in_pkg=1; pkg_version=""; pkg_filename="" ;;
-                    "Package: "*)
-                        [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ] && break
-                        in_pkg=0
-                        ;;
-                    "Version: "*)
-                        [ "$in_pkg" -eq 1 ] && pkg_version="${line#Version: }"
-                        ;;
-                    "Filename: "*)
-                        [ "$in_pkg" -eq 1 ] && pkg_filename="${line#Filename: }"
-                        ;;
-                    "")
-                        [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ] && break
-                        in_pkg=0
-                        ;;
-                esac
-            done < "$f"
-            if [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ]; then
-                found=1
-                break
-            fi
-        done
-
-        [ "$found" -eq 0 ] && { error "Package $pkg not found. Run 'apt update' first."; exit 1; }
-
-        full_url="${repo_url}/${pkg_filename}"
-        deb_name="${pkg_filename##*/}"
-        deb_file="/tmp/${deb_name}"
-
-        info "Downloading $pkg ($pkg_version)..."
-        if ! wget_download "$full_url" "$deb_file"; then
-            error "Failed to download $pkg from $full_url"
-            rm -f "$deb_file"
-            exit 1
+        if is_installed "$pkg"; then
+            info "$pkg is already installed"
+            continue
         fi
-
-        cp "$deb_file" "$APT_ARCHIVE_DIR/" 2>/dev/null
-        info "Installing $pkg..."
-        "$DPKG" -i "$deb_file" 2>&1 || {
-            rc=$?
-            error "Failed to install $pkg (dpkg exit code $rc)"
-            rm -f "$deb_file"
-            exit $rc
-        }
-        rm -f "$deb_file"
+        resolve_deps "$pkg"
+        install_pkg "$pkg"
     done
+    rm -f "$MARKED_FILE"
     info "Done installing packages"
 }
 

@@ -262,3 +262,48 @@ dpkg -i /tmp/tar_1.34+dfsg-1.2+deb12u1_amd64.deb
 dpkg -i /tmp/tar_1.34+dfsg-1.2+deb12u1_amd64.deb
 apt install fastfetch
 exit
+apt update
+exit
+apt upate
+apt upate
+apt upate
+apt upate
+exit
+apt upate
+apt upate
+apt upate
+apt upate
+apt upate
+apt upate
+apt upate
+exit
+apt
+exit
+apt
+exit
+ls -ld /bin
+ls -l /bin/sh
+ls -l /usr/bin/bash
+head -n1 /usr/bin/apt
+ln -s /usr/bin/bash /bin/sh
+apt --version
+apt update
+cat /usr/bin/apt
+apt update
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+fastfetch
+apt remove fastfetch
+apt install fastfetch
+apt remove libyyjson0 libgcc-s1 gcc-14-base libc6
+apt install fastfetch
+fastfetch
+apt install fastfetch
+apt install usrmerge
+apt install fastfetch
+fastfetch
+apt remove libyyjson0 libgcc-s1 gcc-14-base libc6
+apt remove fastfetch
+apt install fastfetch
