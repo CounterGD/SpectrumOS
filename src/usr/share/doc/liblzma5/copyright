@@ -15,7 +15,7 @@ Comment:
  This file describes the source package.  The binary packages contain
  some files derived from other works: for example, images in the API
  documentation come from Doxygen.
- .
+License:
  Different licenses apply to different files in this package. Here
  is a summary of which licenses apply to which parts of this package:
  .
@@ -189,11 +189,14 @@ License: FSFUL
  This file is free software; the Free Software Foundation gives
  unlimited permission to use, copy, distribute, and modify it.
 
+Files: COPYING.GPLv2 COPYING.GPLv3 COPYING.LGPLv2.1
+Copyright: © 1989, 1991, 1999, 2007 Free Software Foundation, Inc.
+License: noderivs
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
 Files: debian/*
-Copyright:
- 2009-2012 Jonathan Nieder
- 2016-2026 Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
- 2025-2026 Otto Kekäläinen
+Copyright: 2009-2012, Jonathan Nieder
 License: PD-debian
  The Debian packaging files are in the public domain.
  You may freely use, modify, distribute, and relicense them.
@@ -222,8 +225,9 @@ License: LGPL-2.1+
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Lesser General Public License for more details.
  .
- You should have received a copy of the GNU Lesser General Public License
- along with this program.  If not, see https://www.gnu.org/licenses/.
+ You should have received a copy of the GNU Lesser General Public License along
+ with this program; if not, write to the Free Software Foundation,
+ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  .
  On Debian systems, the complete text of the GNU Lesser General Public
  License version 2.1 can be found in ‘/usr/share/common-licenses/LGPL-2.1’.
@@ -239,8 +243,9 @@ License: GPL-2+
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
  .
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see https://www.gnu.org/licenses/.
+ You should have received a copy of the GNU General Public License along
+ with this program; if not, write to the Free Software Foundation,
+ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  .
  On Debian systems, the complete text of the GNU General Public License
  version 2 can be found in ‘/usr/share/common-licenses/GPL-2’.
@@ -256,8 +261,8 @@ License: GPL-3.0-or-later-WITH-Autoconf-exception-macro
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  Public License for more details.
  .
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see https://www.gnu.org/licenses/.
+ You should have received a copy of the GNU General Public License along
+ with this program. If not, see <http://www.gnu.org/licenses/>.
  .
  As a special exception, the respective Autoconf Macro's copyright owner
  gives unlimited permission to copy, distribute and modify the configure

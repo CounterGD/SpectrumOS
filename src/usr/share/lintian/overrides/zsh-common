@@ -1,0 +1,9 @@
+zsh-common: menu-command-not-in-package bin/zsh [usr/share/menu/zsh-common:1]
+zsh-common: pkg-not-in-package-test zsh [usr/share/menu/zsh-common:1]
+# Clearly a false positive:
+zsh-common: extra-license-file [usr/share/zsh/functions/Completion/BSD.zwc]
+# Of course they aren't their own commands, but you don't want to have
+# one thousands lines man page like bash has...
+zsh-common: spare-manual-page [usr/share/man/man1/zsh*.1.gz]
+# False positive, guarded by check if the running shell is zsh
+zsh-common: bash-term-in-posix-shell '[[' [usr/share/doc/zsh-common/examples/Misc/c2z:53]

@@ -1,0 +1,6 @@
+/lib64/ld-linux-x86-64.so.2
+/lib64/ld-linux-x86-64.so.2.usr-is-merged
+libc6
+/lib64
+/.lib64.usr-is-merged
+base-files

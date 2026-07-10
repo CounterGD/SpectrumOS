@@ -1,149 +1,3 @@
-ls
-nano
-vi
-vim
-nano
-exit
-nano
-export TERM=linux
-nano
-ls /usr/share/terminfo
-exit
-nano
-exit
-dpkg --version
-dpkg
-which dpkg
-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeexit
-exit
-/usr/bin/dpkg --version
-exit
-/usr/bin/dpkg --version
-cd ~/tmp-libmd
-wget http://deb.debian.org/debian/pool/main/libs/libselinux/libselinux1_3.8-3_amd64.deb
-exit
-/usr/bin/dpkg --version
-exit
-/usr/bin/dpkg --version
-mkdir -p /var/lib/dpkg
-touch /var/lib/dpkg/status
-ls -la /var/lib/dpkg
-which dpkg
-ls -l /bin/dpkg
-eeexit
-exit
-ls
-cd tmp
-dpkg -i tmp
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-echo $PATH
-which sh
-which tar
-which ldconfig
-which start-stop-daemon
-mkdir ~/tmp-libc-bin
-cd ~/tmp-libc-bin
-ls
-cd ..
-ls
-cd ..
-ls
-pwd
-ls tmp
-rm -rf tmp
-exit
-dpkg -i tmp
-echo $PATH
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-echo $PATH
-dpkg -i tmp
-ls
-ls etc
-cd ..
-ls
-ls var
-mkdir var/log
-dpkg -i tmp
-pwd
-ls
-mkdir tmp
-ls tmp
-dpkg -i tmp/pkg.deb 
-exit
-dpkg -i tmp/pkg.deb 
-nano /etc/bash.bashrc
-dpkg -i tmp/pkg.deb 
-nano /etc/profile
-exit
-dpkg -i tmp/pkg.deb 
-echo $PATH
-nano /root/.bashrc
-exit
-echo $PATH
-dpkg -i tmp/pkg.deb 
-dpkg -i tmp/pkg.deb 
-dpkg -i tmp/pkg.deb 
-dpkg -i tmp/pkg.deb 
-dpkg -i tmp/pkg.deb 
-dpkg --install tmp/pkg.deb 
-dpkg --install tmp/pkg.deb 
-dpkg --install tmp/pkg.deb 
-mkdir -p /etc/apt
-mkdir -p /var/lib/apt/lists
-mkdir -p /var/cache/apt/archives
-nano /etc/apt/sources.list
-apt
-apt -h
-apt -h
-apt -h
-apt -h
-apt -h
-apt -h
-apt -h
-apt -h
-apt -h
-apt -h
-apt -h
-apt -h
-dpkg -l | grep -E 'apt|libapt'
-which apt
-ls -l /usr/bin/apt
-ldd /usr/bin/apt
-dpkg -S /usr/lib/x86_64-linux-gnu/libapt-pkg.so.7.0
-dpkg-deb -f ~/Downloads/apt_3.3.1_amd64.deb Depends
-dpkg-deb -f apt_3.3.1_amd64.deb Depends
-which apt
-apt -h
-dpkg -l | grep -E 'apt|libapt'
-ls -l /usr/lib/x86_64-linux-gnu/libapt*
-cat /etc/os-release
-apt --version
-dpkg --version
-dpkg -S /usr/lib/x86_64-linux-gnu/libapt-pkg.so.7.0.0
-dpkg -S /usr/lib/x86_64-linux-gnu/libapt-private.so.0.0.0
-cat /etc/os-release 2>/dev/null || true
-cat /etc/debian_version 2>/dev/null || true
-uname -a
-cat /etc/issue
-cat /etc/*release* 2>/dev/null
-ls /usr/bin | grep -E 'pacman|apt|apk|dnf|yum'
-ls /var/lib | grep -E 'dpkg|pacman|apk|rpm'
-clear
-ls -lh /var/lib/dpkg/status
-head -20 /var/lib/dpkg/status
-grep -E '^Package: (apt|libapt|libapt-pkg)' /var/lib/dpkg/status
-grep -E '^Package: (base-files|debianutils)' /var/lib/dpkg/status
-dpkg-query -W base-files
-ls -l /usr/lib/x86_64-linux-gnu/libapt*
-ls -la /
-clear
-ls -la /
-ls -la /etc
-find / -maxdepth 3 -name '*debian*' -o -name '*ubuntu*' 2>/dev/null
-rm -f /usr/bin/apt*
-rm -f /usr/lib/x86_64-linux-gnu/libapt*
-apt
-rm -f /usr/bin/apt
 rm -f /usr/bin/apt-*
 rm -f /usr/lib/x86_64-linux-gnu/libapt-pkg.so.7.0*
 rm -f /usr/lib/x86_64-linux-gnu/libapt-private.so.0.0*
@@ -474,4 +328,173 @@ cowsay hello
 cowsay hello
 cowsay hello
 cowsay hello
+exit
+cowsay hello
+apt remove cowsay
+fastfetch
+apt search jp2a
+apt install jp2a
+exit
+apt install jp2a
+apt install jp2a
+jp2a
+jp2a
+apt install jp2a
+apt install jp2a
+exit
+apt install jp2a
+apt install jp2a
+apt install jp2a
+jp2a
+fastfetc
+fastfetch
+apt autoremove
+apt remove jp2a
+apt autoremove
+fastfetch
+jp2a
+apt autoremove
+apt autoremove
+apt autoremove
+apt autoremove
+apt list
+apt list --installed
+apt list -i
+fastfetch
+apt autoremove
+apt -h
+apt autoremove
+apt list --installed
+apt remove cowsay
+apt autoremove
+fastfetch
+fastfetch
+fastfetch
+fastfetch
+fastfetch
+fastfetch
+clear
+apt autoremove
+apt autoremove
+clear
+apt autoremove
+apt autoremove
+fastfetch
+apt list --installed
+apt remove fastfetch
+fastfetch
+apt autoremove
+apt install fastfetch
+apt install fastfetch
+apt remove fastfetch
+apt autoremove
+apt remove fastfetch
+apt install fastfetch
+apt install fastfetch
+fastfetch
+fastfetch --logo Ubuntu
+fastfetch
+apt install onefetch
+apt update
+apt install onefetch
+onefetch
+apt install git
+git -v
+ls
+apt remove git
+apt autoremove
+apt autoremove
+apt autoremove
+apt autoremove
+apt install --reinstall libc6
+apt install --reinstall libc6
+apt autoremove
+apt autoremove
+apt autoremove
+apt autoremove
+apt autoremove --purge
+apt --purge autoremove
+apt apt install --reinstall libc6
+apt install --reinstall libc6
+apt autoremove --purge
+apt autoremove --purge
+apt autoremove --purge
+apt autoremove --purge
+apt autoremove
+apt remove fastfetch
+apt install libc6
+fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+exit
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt autoremove
+fastfetch
+apt autoremove
+apt install fastfetch
+fastfetch
+apt remove fastfetch
+apt install fastfetch
+apt install cmatrix
+cmatrix
+apt remove cmatrix
+apt autoremove
+apt install curl
+sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fastfetch
+ls -l /etc/ssl/certs/ca-certificates.crt
+cat /etc/os-release 
+apt install -y ca-certificates
+apt install ca-certificates
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+apt install zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+apt install git
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+ls -l /dev/random /dev/urandom
+ls
+ls -la /dev
+mount -t devtmpfs devtmpfs /dev
+ls -la /dev
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+exit
+exit
+ps -p 1 -o pid,comm,args
+ps -o PID,COMM,ARGS
+ps -o pid,comm,args
+ls
+mkdir -p /proc
+mount -t proc proc /proc
+ps -o pid,comm,args
+exit
+zsh
+exit
+ls
+ls -l /usr/lib/systemd/systemd]
+ls -l /usr/lib/systemd/systemd
+find / -name systemd 2>/dev/null | head -50
+ls -la /usr/lib/systemd | head -50
+/usr/lib/systemd/systemd --version
+pwd
+apt search systemd
+apt install systemd systemd-sysv
+apt install usrmerge
+apt install systemd systemd-sysv
+apt install coreutils
+apt install util-linux
+zsh
 exit

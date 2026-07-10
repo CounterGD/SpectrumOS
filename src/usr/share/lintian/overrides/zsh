@@ -1,0 +1,4 @@
+# Only two of many files affected -> likely a false positive
+zsh: hardening-no-fortify-functions [usr/lib*/zsh/*/zsh/zleparameter.so]
+# Migration wrapper which is not meant to be used
+zsh: no-manual-page [usr/bin/zsh5]

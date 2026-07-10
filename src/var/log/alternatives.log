@@ -1,0 +1,8 @@
+update-alternatives 2026-07-10 19:30:28: run with --quiet --install /usr/bin/www-browser www-browser /usr/bin/links 68 --slave /usr/share/man/man1/www-browser.1.gz www-browser.1.gz /usr/share/man/man1/links.1.gz
+update-alternatives 2026-07-10 19:30:28: link group www-browser updated to point to /usr/bin/links
+update-alternatives 2026-07-10 19:31:02: run with --quiet --remove www-browser /usr/bin/links
+update-alternatives 2026-07-10 19:31:02: link group www-browser fully removed
+update-alternatives 2026-07-10 19:44:55: run with --quiet --install /lib/cpp cpp /usr/bin/cpp 10
+update-alternatives 2026-07-10 19:44:55: link group cpp updated to point to /usr/bin/cpp
+update-alternatives 2026-07-10 20:44:11: run with --install /usr/bin/which which /usr/bin/which.debianutils 0 --slave /usr/share/man/man1/which.1.gz which.1.gz /usr/share/man/man1/which.debianutils.1.gz --slave /usr/share/man/de/man1/which.1.gz which.de1.gz /usr/share/man/de/man1/which.debianutils.1.gz --slave /usr/share/man/es/man1/which.1.gz which.es1.gz /usr/share/man/es/man1/which.debianutils.1.gz --slave /usr/share/man/fr/man1/which.1.gz which.fr1.gz /usr/share/man/fr/man1/which.debianutils.1.gz --slave /usr/share/man/it/man1/which.1.gz which.it1.gz /usr/share/man/it/man1/which.debianutils.1.gz --slave /usr/share/man/ja/man1/which.1.gz which.ja1.gz /usr/share/man/ja/man1/which.debianutils.1.gz --slave /usr/share/man/pl/man1/which.1.gz which.pl1.gz /usr/share/man/pl/man1/which.debianutils.1.gz --slave /usr/share/man/sl/man1/which.1.gz which.sl1.gz /usr/share/man/sl/man1/which.debianutils.1.gz
+update-alternatives 2026-07-10 20:44:11: link group which updated to point to /usr/bin/which.debianutils

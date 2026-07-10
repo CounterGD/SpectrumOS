@@ -1,0 +1,13 @@
+Document: zsh-faq
+Title: Z Shell FAQ
+Author: Peter Stephenson <coordinator@zsh.org>
+Abstract: This document contains a list of frequently-asked (or
+ otherwise significant) questions concerning the Z-shell, a command
+ interpreter for many UNIX systems which is freely available to anyone
+ with FTP access.  Zsh is among the most powerful freely available
+ Bourne-like shells for interactive use.
+Section: Shells
+
+Format: Text
+Index: /usr/share/doc/zsh-common/FAQ.gz
+Files: /usr/share/doc/zsh-common/FAQ.gz
