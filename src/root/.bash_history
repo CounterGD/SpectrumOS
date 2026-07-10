@@ -331,3 +331,51 @@ apt install fastfetch
 fastftech
 fastfetch
 apt remove fastfetch
+fastfetch
+apt install fastfetch
+fastfetch
+apt remove fastfetch
+exit
+fastfetch
+apt remove fastfetch
+apt install fastfetch
+fastfetch
+nano etc/os-realease 
+apt install fastfetch
+fastfetch
+fastfetch
+apt remove fastfetch
+clear
+exit
+fastfetch
+apt install fastfetch
+fastfetch
+nano etc/os-realease
+fastfetch
+cat /etc/os-release
+pwd
+ls
+ls
+ls etc
+fastfetch
+mv /etc/os-realease /etc/os-release
+ls etc
+fastfetch
+nano etc/os-release
+fastfetch
+nano etc/os-release
+fastfetch
+ls
+cd root
+ls
+ls .config
+ls -a
+cd ..
+cd ..
+cd ..
+pwd
+ls
+fastfetch
+exit
+fastfetch --list-logos | grep spectrum
+exit

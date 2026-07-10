@@ -1,3 +1,19 @@
+Package: fastfetch
+Status: install ok installed
+Priority: optional
+Section: utils
+Installed-Size: 1805
+Maintainer: Hiago De Franco <hiagofranco@gmail.com>
+Architecture: amd64
+Multi-Arch: foreign
+Version: 2.40.4+dfsg-1
+Depends: libc6 (>= 2.38), libyyjson0 (>= 0.10.0+ds)
+Description: neofetch-like tool for fetching system information
+ Fastfetch is a neofetch-like tool for fetching system information and
+ displaying them in a pretty way. It is written mainly in C, with
+ performance and customizability in mind.
+Homepage: https://github.com/fastfetch-cli/fastfetch
+
 Package: gcc-14-base
 Status: install ok installed
 Priority: optional
