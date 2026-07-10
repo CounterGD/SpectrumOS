@@ -15,19 +15,11 @@ Description: GCC, the GNU Compiler Collection (base package)
 Homepage: http://gcc.gnu.org/
 
 Package: libc6
-Status: install ok installed
+Status: install ok not-installed
 Priority: optional
 Section: libs
-Installed-Size: 15000
-Maintainer: Debian Glibc Maintainers <debian-glibc@lists.debian.org>
 Architecture: amd64
 Multi-Arch: same
-Source: glibc
-Version: 2.42-17
-Replaces: libc6-amd64
-Description: GNU C Library: shared libraries
- Contains the standard shared libraries for the GNU C Library.
-Homepage: https://www.gnu.org/software/libc/libc.html
 
 Package: libnumber-compare-perl
 Status: install ok installed
@@ -60,19 +52,4 @@ Description: Perl module for matching globbing patterns against text
  against text, rather than fetching names from a filesystem.  If you
  want to do full file globbing use the File::Glob module instead.
 Homepage: https://metacpan.org/release/Text-Glob
-
-Package: libyyjson0
-Status: install ok installed
-Priority: optional
-Section: libs
-Installed-Size: 210
-Maintainer: Debian QA Group <packages@qa.debian.org>
-Architecture: amd64
-Multi-Arch: same
-Source: yyjson
-Version: 0.10.0+ds-1+b1
-Description: Library for high-performance JSON processing
- yyjson is a high-performance JSON library written in C.
- It provides parsing and writing capabilities.
-Homepage: https://github.com/ibireme/yyjson
 

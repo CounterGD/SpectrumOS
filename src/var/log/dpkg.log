@@ -106,3 +106,69 @@
 2026-07-09 16:44:44 install libc6:amd64 <none> 2.41-12+deb13u3
 2026-07-09 16:44:44 status half-installed libc6:amd64 2.41-12+deb13u3
 2026-07-09 16:44:44 status not-installed libc6:amd64 <none>
+2026-07-10 14:23:31 startup archives install
+2026-07-10 14:23:32 upgrade gcc-14-base:amd64 14.2.0-19 14.2.0-19
+2026-07-10 14:23:32 status half-configured gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:23:32 status unpacked gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:23:32 status half-installed gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:23:32 status unpacked gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:23:33 configure gcc-14-base:amd64 14.2.0-19 14.2.0-19
+2026-07-10 14:23:33 status half-configured gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:23:33 status installed gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:23:41 startup archives install
+2026-07-10 14:23:42 install libc6:amd64 <none> 2.41-12+deb13u3
+2026-07-10 14:23:42 status half-installed libc6:amd64 2.41-12+deb13u3
+2026-07-10 14:23:42 status not-installed libc6:amd64 <none>
+2026-07-10 14:26:12 startup archives install
+2026-07-10 14:26:13 upgrade gcc-14-base:amd64 14.2.0-19 14.2.0-19
+2026-07-10 14:26:13 status half-configured gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:26:13 status unpacked gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:26:13 status half-installed gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:26:13 status unpacked gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:26:14 configure gcc-14-base:amd64 14.2.0-19 14.2.0-19
+2026-07-10 14:26:14 status half-configured gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:26:14 status installed gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:26:23 startup archives install
+2026-07-10 14:26:23 upgrade libc6:amd64 2.42-17 2.41-12+deb13u3
+2026-07-10 14:26:23 status half-configured libc6:amd64 2.42-17
+2026-07-10 14:26:23 status unpacked libc6:amd64 2.42-17
+2026-07-10 14:26:24 status half-installed libc6:amd64 2.42-17
+2026-07-10 14:26:24 status unpacked libc6:amd64 2.42-17
+2026-07-10 14:26:24 status installed libc6:amd64 2.42-17
+2026-07-10 14:26:40 startup archives install
+2026-07-10 14:26:40 upgrade gcc-14-base:amd64 14.2.0-19 14.2.0-19
+2026-07-10 14:26:40 status half-configured gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:26:40 status unpacked gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:26:40 status half-installed gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:26:41 status unpacked gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:26:42 configure gcc-14-base:amd64 14.2.0-19 14.2.0-19
+2026-07-10 14:26:42 status half-configured gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:26:42 status installed gcc-14-base:amd64 14.2.0-19
+2026-07-10 14:26:52 startup archives install
+2026-07-10 14:26:53 upgrade libc6:amd64 2.42-17 2.41-12+deb13u3
+2026-07-10 14:26:53 status half-configured libc6:amd64 2.42-17
+2026-07-10 14:26:53 status unpacked libc6:amd64 2.42-17
+2026-07-10 14:26:53 status half-installed libc6:amd64 2.42-17
+2026-07-10 14:26:53 status unpacked libc6:amd64 2.42-17
+2026-07-10 14:26:53 status installed libc6:amd64 2.42-17
+2026-07-10 14:27:20 startup packages remove
+2026-07-10 14:27:20 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 14:27:20 remove fastfetch:amd64 2.40.4+dfsg-1 <none>
+2026-07-10 14:27:20 status half-configured fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 14:27:20 status half-installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 14:27:20 status config-files fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 14:27:21 status not-installed fastfetch:amd64 <none>
+2026-07-10 14:27:32 startup archives install
+2026-07-10 14:27:33 install fastfetch:amd64 <none> 2.40.4+dfsg-1
+2026-07-10 14:27:33 status half-installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 14:27:35 status unpacked fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 14:27:35 configure fastfetch:amd64 2.40.4+dfsg-1 2.40.4+dfsg-1
+2026-07-10 14:27:35 status half-configured fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 14:27:35 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 14:29:16 startup packages remove
+2026-07-10 14:29:16 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 14:29:16 remove fastfetch:amd64 2.40.4+dfsg-1 <none>
+2026-07-10 14:29:16 status half-configured fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 14:29:17 status half-installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 14:29:17 status config-files fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 14:29:17 status not-installed fastfetch:amd64 <none>

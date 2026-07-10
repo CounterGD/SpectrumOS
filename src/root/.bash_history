@@ -307,3 +307,27 @@ fastfetch
 apt remove libyyjson0 libgcc-s1 gcc-14-base libc6
 apt remove fastfetch
 apt install fastfetch
+apt list
+apt -h
+apt list --installed
+apt install fastfetch
+fastfetch
+cat /bin/apt
+cat /usr/bin/apt
+apt list --installed
+exit
+apt list --installed
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+apt list --installed
+apt install fastfetch
+fastfetch
+apt remove fastfetch
+fastfetch
+apt install fastfetch
+apt autoremove
+apt install fastfetch
+fastftech
+fastfetch
+apt remove fastfetch

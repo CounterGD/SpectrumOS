@@ -116,8 +116,7 @@ cmd_update() {
 }
 
 is_installed() {
-    grep -q "^Package: $1\$" "$STATUS_DB" 2>/dev/null && \
-    grep -q "Status: install ok installed" "$STATUS_DB" 2>/dev/null
+    awk -v pkg="$1" '/^Package: /{p=$2; s=""} p==pkg && /^Status: /{s=$0; exit} END{if(s && s ~ /installed/) print "yes"}' "$STATUS_DB" 2>/dev/null | grep -q "yes"
 }
 
 extract_depends() {
