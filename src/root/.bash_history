@@ -475,6 +475,6 @@ cowsay hello
 cowsay hello
 cowsay hello
 exit
-apt remove 
+apt remove git
 apt autoremove
 exit
