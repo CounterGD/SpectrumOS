@@ -2,5 +2,5 @@ NAME="SpectrumOS"
 VERSION="1.0"
 ID=spectrum
 ID_LIKE=debian
-PRETTY_NAME="SpectrumOS 1.0"
+PRETTY_NAME="SpectrumOS"
 VERSION_ID="1.0"

@@ -379,3 +379,99 @@ fastfetch
 exit
 fastfetch --list-logos | grep spectrum
 exit
+fastfetch
+nano etc/os-release 
+fastfetch
+fastfetch
+apt install sl
+sl
+sl
+sl
+sl
+sl
+sl
+sl
+sl
+sl
+sl
+apt search sl
+apt list --installed
+apt install neofetch
+apt update
+apt install neofetch
+apt install cowsay
+apt install cowsay
+apt install cowsay
+apt install cowsay
+apt install cowsay
+apt install cowsay
+apt install cowsay
+apt --version
+fastfetch
+apt install cowsay
+apt install cowsay
+apt install cowsay
+apt install cowsay
+apt install neofetch
+apt install fastfetch
+apt install cowsay
+apt install neofetch
+fastfetch
+fastfetch
+apt install neofetch
+apt install fastfetch
+fastfetch
+apt install fastfetch
+apt install fastfetch
+apt install fastfetch
+fastfetch
+fastfetch
+apt install fastfetch
+fastfetch
+apt install fastfetch
+fastfetch
+apt install fastfetch
+apt install fastfetch
+fastfetch
+apt remove fastfetch
+fastfetch
+apt install fastfetch
+fastfetch
+apt remove fastfetch
+apt install cowsay
+apt install cowsay
+apt install cowsay
+cowasay
+cowsay
+apt install fastfetch
+apt install cowsay
+apt install fastfetch
+apt remove fastfetch
+apt install fastfetch
+fastfetch
+apt remove fastfetch
+apt install cowsay
+apt remove fastfetch
+apt install fastfetch
+fastfetch
+apt install cowsay
+cowsay
+cowsay hello
+cowsay
+/usr/games/cowsay
+/usr/games/cowsay hello
+cowsay hello
+apt remove cowsay
+apt install cowsay
+cowsay hello
+exit
+cowsay hello
+cowsay hello
+cowsay hello
+cowsay hello
+cowsay hello
+cowsay hello
+cowsay hello
+cowsay hello
+cowsay hello
+exit

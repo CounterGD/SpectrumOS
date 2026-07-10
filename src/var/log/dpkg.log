@@ -221,3 +221,190 @@
 2026-07-10 14:57:30 configure fastfetch:amd64 2.40.4+dfsg-1 2.40.4+dfsg-1
 2026-07-10 14:57:30 status half-configured fastfetch:amd64 2.40.4+dfsg-1
 2026-07-10 14:57:30 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 16:45:48 startup archives install
+2026-07-10 17:31:34 startup archives install
+2026-07-10 17:31:35 install libyyjson0:amd64 <none> 0.10.0+ds-1+b1
+2026-07-10 17:31:35 status half-installed libyyjson0:amd64 0.10.0+ds-1+b1
+2026-07-10 17:31:35 status unpacked libyyjson0:amd64 0.10.0+ds-1+b1
+2026-07-10 17:31:35 configure libyyjson0:amd64 0.10.0+ds-1+b1 0.10.0+ds-1+b1
+2026-07-10 17:31:35 status half-configured libyyjson0:amd64 0.10.0+ds-1+b1
+2026-07-10 17:31:35 status installed libyyjson0:amd64 0.10.0+ds-1+b1
+2026-07-10 17:31:39 startup archives install
+2026-07-10 17:31:39 install fastfetch:amd64 <none> 2.40.4+dfsg-1
+2026-07-10 17:31:39 status half-installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:31:42 status unpacked fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:31:42 configure fastfetch:amd64 2.40.4+dfsg-1 2.40.4+dfsg-1
+2026-07-10 17:31:42 status half-configured fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:31:42 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:31:57 startup packages remove
+2026-07-10 17:31:57 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:31:57 remove fastfetch:amd64 2.40.4+dfsg-1 <none>
+2026-07-10 17:31:57 status half-configured fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:31:57 status half-installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:31:57 status config-files fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:31:58 status not-installed fastfetch:amd64 <none>
+2026-07-10 17:32:06 startup archives install
+2026-07-10 17:32:06 install fastfetch:amd64 <none> 2.40.4+dfsg-1
+2026-07-10 17:32:06 status half-installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:32:08 status unpacked fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:32:08 configure fastfetch:amd64 2.40.4+dfsg-1 2.40.4+dfsg-1
+2026-07-10 17:32:08 status half-configured fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:32:08 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:32:15 startup packages remove
+2026-07-10 17:32:15 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:32:15 remove fastfetch:amd64 2.40.4+dfsg-1 <none>
+2026-07-10 17:32:15 status half-configured fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:32:15 status half-installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:32:15 status config-files fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:32:15 status not-installed fastfetch:amd64 <none>
+2026-07-10 17:32:38 startup archives install
+2026-07-10 17:33:05 startup archives install
+2026-07-10 17:33:06 install libtext-charwidth-perl:amd64 <none> 0.04-11+b4
+2026-07-10 17:33:06 status half-installed libtext-charwidth-perl:amd64 0.04-11+b4
+2026-07-10 17:33:06 status unpacked libtext-charwidth-perl:amd64 0.04-11+b4
+2026-07-10 17:34:52 startup archives install
+2026-07-10 17:34:52 upgrade libtext-charwidth-perl:amd64 0.04-11+b4 0.04-11+b4
+2026-07-10 17:34:52 status half-installed libtext-charwidth-perl:amd64 0.04-11+b4
+2026-07-10 17:34:53 status unpacked libtext-charwidth-perl:amd64 0.04-11+b4
+2026-07-10 17:44:59 startup archives install
+2026-07-10 17:44:59 install fastfetch:amd64 <none> 2.40.4+dfsg-1
+2026-07-10 17:44:59 status half-installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:45:02 status unpacked fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:45:02 configure fastfetch:amd64 2.40.4+dfsg-1 2.40.4+dfsg-1
+2026-07-10 17:45:02 status half-configured fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:45:02 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:45:23 startup archives install
+2026-07-10 17:45:24 install libcrypt1:amd64 <none> 1:4.4.38-1
+2026-07-10 17:45:24 status half-installed libcrypt1:amd64 1:4.4.38-1
+2026-07-10 17:45:25 status unpacked libcrypt1:amd64 1:4.4.38-1
+2026-07-10 17:45:25 configure libcrypt1:amd64 1:4.4.38-1 1:4.4.38-1
+2026-07-10 17:45:25 status half-configured libcrypt1:amd64 1:4.4.38-1
+2026-07-10 17:45:25 status installed libcrypt1:amd64 1:4.4.38-1
+2026-07-10 17:45:44 startup archives install
+2026-07-10 17:45:44 install perl-modules-5.40:all <none> 5.40.1-6
+2026-07-10 17:45:44 status half-installed perl-modules-5.40:all 5.40.1-6
+2026-07-10 17:45:57 status unpacked perl-modules-5.40:all 5.40.1-6
+2026-07-10 17:50:55 startup packages remove
+2026-07-10 17:50:55 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:50:55 remove fastfetch:amd64 2.40.4+dfsg-1 <none>
+2026-07-10 17:50:55 status half-configured fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:50:55 status half-installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:50:56 status config-files fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:50:56 status not-installed fastfetch:amd64 <none>
+2026-07-10 17:51:01 startup archives install
+2026-07-10 17:51:01 install fastfetch:amd64 <none> 2.40.4+dfsg-1
+2026-07-10 17:51:01 status half-installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:51:03 status unpacked fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:51:04 configure fastfetch:amd64 2.40.4+dfsg-1 2.40.4+dfsg-1
+2026-07-10 17:51:04 status half-configured fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:51:04 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:52:02 startup packages remove
+2026-07-10 17:52:02 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:52:02 remove fastfetch:amd64 2.40.4+dfsg-1 <none>
+2026-07-10 17:52:02 status half-configured fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:52:02 status half-installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:52:02 status config-files fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:52:03 status not-installed fastfetch:amd64 <none>
+2026-07-10 17:52:25 startup archives install
+2026-07-10 17:52:25 upgrade libtext-charwidth-perl:amd64 0.04-11+b4 0.04-11+b4
+2026-07-10 17:52:25 status half-installed libtext-charwidth-perl:amd64 0.04-11+b4
+2026-07-10 17:52:25 status unpacked libtext-charwidth-perl:amd64 0.04-11+b4
+2026-07-10 17:59:45 startup packages remove
+2026-07-10 17:59:53 startup archives install
+2026-07-10 17:59:53 install fastfetch:amd64 <none> 2.40.4+dfsg-1
+2026-07-10 17:59:53 status half-installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:59:55 status unpacked fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:59:55 configure fastfetch:amd64 2.40.4+dfsg-1 2.40.4+dfsg-1
+2026-07-10 17:59:55 status half-configured fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 17:59:55 status installed fastfetch:amd64 2.40.4+dfsg-1
+2026-07-10 18:01:29 startup archives install
+2026-07-10 18:01:29 install perl-base:amd64 <none> 5.40.1-6
+2026-07-10 18:01:29 status half-installed perl-base:amd64 5.40.1-6
+2026-07-10 18:01:32 status unpacked perl-base:amd64 5.40.1-6
+2026-07-10 18:01:32 configure perl-base:amd64 5.40.1-6 5.40.1-6
+2026-07-10 18:01:32 status half-configured perl-base:amd64 5.40.1-6
+2026-07-10 18:01:32 status installed perl-base:amd64 5.40.1-6
+2026-07-10 18:01:48 startup archives install
+2026-07-10 18:01:49 install perl-modules-5.40:all <none> 5.40.1-6
+2026-07-10 18:01:49 status half-installed perl-modules-5.40:all 5.40.1-6
+2026-07-10 18:02:04 status unpacked perl-modules-5.40:all 5.40.1-6
+2026-07-10 18:02:04 configure perl-modules-5.40:all 5.40.1-6 5.40.1-6
+2026-07-10 18:02:04 status half-configured perl-modules-5.40:all 5.40.1-6
+2026-07-10 18:02:04 status installed perl-modules-5.40:all 5.40.1-6
+2026-07-10 18:02:08 startup archives install
+2026-07-10 18:02:09 install libbz2-1.0:amd64 <none> 1.0.8-6
+2026-07-10 18:02:09 status half-installed libbz2-1.0:amd64 1.0.8-6
+2026-07-10 18:02:09 status unpacked libbz2-1.0:amd64 1.0.8-6
+2026-07-10 18:02:09 configure libbz2-1.0:amd64 1.0.8-6 1.0.8-6
+2026-07-10 18:02:10 status half-configured libbz2-1.0:amd64 1.0.8-6
+2026-07-10 18:02:10 status installed libbz2-1.0:amd64 1.0.8-6
+2026-07-10 18:02:14 startup archives install
+2026-07-10 18:02:14 install libdb5.3t64:amd64 <none> 5.3.28+dfsg2-9
+2026-07-10 18:02:14 status half-installed libdb5.3t64:amd64 5.3.28+dfsg2-9
+2026-07-10 18:02:15 status unpacked libdb5.3t64:amd64 5.3.28+dfsg2-9
+2026-07-10 18:02:15 configure libdb5.3t64:amd64 5.3.28+dfsg2-9 5.3.28+dfsg2-9
+2026-07-10 18:02:15 status half-configured libdb5.3t64:amd64 5.3.28+dfsg2-9
+2026-07-10 18:02:15 status installed libdb5.3t64:amd64 5.3.28+dfsg2-9
+2026-07-10 18:02:23 startup archives install
+2026-07-10 18:02:23 install libgdbm6t64:amd64 <none> 1.24-2
+2026-07-10 18:02:23 status half-installed libgdbm6t64:amd64 1.24-2
+2026-07-10 18:02:23 status unpacked libgdbm6t64:amd64 1.24-2
+2026-07-10 18:02:24 configure libgdbm6t64:amd64 1.24-2 1.24-2
+2026-07-10 18:02:24 status half-configured libgdbm6t64:amd64 1.24-2
+2026-07-10 18:02:24 status installed libgdbm6t64:amd64 1.24-2
+2026-07-10 18:02:35 startup archives install
+2026-07-10 18:02:35 install libgdbm-compat4t64:amd64 <none> 1.24-2
+2026-07-10 18:02:35 status half-installed libgdbm-compat4t64:amd64 1.24-2
+2026-07-10 18:02:36 status unpacked libgdbm-compat4t64:amd64 1.24-2
+2026-07-10 18:02:36 configure libgdbm-compat4t64:amd64 1.24-2 1.24-2
+2026-07-10 18:02:36 status half-configured libgdbm-compat4t64:amd64 1.24-2
+2026-07-10 18:02:36 status installed libgdbm-compat4t64:amd64 1.24-2
+2026-07-10 18:03:02 startup archives install
+2026-07-10 18:03:02 install zlib1g:amd64 <none> 1:1.3.dfsg+really1.3.1-1+b1
+2026-07-10 18:03:02 status half-installed zlib1g:amd64 1:1.3.dfsg+really1.3.1-1+b1
+2026-07-10 18:03:04 status unpacked zlib1g:amd64 1:1.3.dfsg+really1.3.1-1+b1
+2026-07-10 18:03:04 configure zlib1g:amd64 1:1.3.dfsg+really1.3.1-1+b1 1:1.3.dfsg+really1.3.1-1+b1
+2026-07-10 18:03:04 status half-configured zlib1g:amd64 1:1.3.dfsg+really1.3.1-1+b1
+2026-07-10 18:03:04 status installed zlib1g:amd64 1:1.3.dfsg+really1.3.1-1+b1
+2026-07-10 18:03:22 startup archives install
+2026-07-10 18:03:22 install libperl5.40:amd64 <none> 5.40.1-6
+2026-07-10 18:03:22 status half-installed libperl5.40:amd64 5.40.1-6
+2026-07-10 18:03:43 status unpacked libperl5.40:amd64 5.40.1-6
+2026-07-10 18:03:44 configure libperl5.40:amd64 5.40.1-6 5.40.1-6
+2026-07-10 18:03:44 status half-configured libperl5.40:amd64 5.40.1-6
+2026-07-10 18:03:44 status installed libperl5.40:amd64 5.40.1-6
+2026-07-10 18:03:59 startup archives install
+2026-07-10 18:03:59 install perl:amd64 <none> 5.40.1-6
+2026-07-10 18:03:59 status half-installed perl:amd64 5.40.1-6
+2026-07-10 18:04:02 status unpacked perl:amd64 5.40.1-6
+2026-07-10 18:04:03 configure perl:amd64 5.40.1-6 5.40.1-6
+2026-07-10 18:04:03 status half-configured perl:amd64 5.40.1-6
+2026-07-10 18:04:03 status installed perl:amd64 5.40.1-6
+2026-07-10 18:04:06 startup archives install
+2026-07-10 18:04:06 install cowsay:all <none> 3.03+dfsg2-8
+2026-07-10 18:04:06 status half-installed cowsay:all 3.03+dfsg2-8
+2026-07-10 18:04:08 status unpacked cowsay:all 3.03+dfsg2-8
+2026-07-10 18:04:09 configure cowsay:all 3.03+dfsg2-8 3.03+dfsg2-8
+2026-07-10 18:04:09 status half-configured cowsay:all 3.03+dfsg2-8
+2026-07-10 18:04:09 status installed cowsay:all 3.03+dfsg2-8
+2026-07-10 18:15:24 startup packages remove
+2026-07-10 18:15:24 status installed cowsay:all 3.03+dfsg2-8
+2026-07-10 18:15:24 remove cowsay:all 3.03+dfsg2-8 <none>
+2026-07-10 18:15:24 status half-configured cowsay:all 3.03+dfsg2-8
+2026-07-10 18:15:24 status half-installed cowsay:all 3.03+dfsg2-8
+2026-07-10 18:15:24 status config-files cowsay:all 3.03+dfsg2-8
+2026-07-10 18:15:25 status not-installed cowsay:all <none>
+2026-07-10 18:15:33 startup archives install
+2026-07-10 18:15:33 install cowsay:all <none> 3.03+dfsg2-8
+2026-07-10 18:15:33 status half-installed cowsay:all 3.03+dfsg2-8
+2026-07-10 18:15:35 status unpacked cowsay:all 3.03+dfsg2-8
+2026-07-10 18:15:36 configure cowsay:all 3.03+dfsg2-8 3.03+dfsg2-8
+2026-07-10 18:15:36 status half-configured cowsay:all 3.03+dfsg2-8
+2026-07-10 18:15:36 status installed cowsay:all 3.03+dfsg2-8
+2026-07-10 18:23:53 startup packages remove
+2026-07-10 18:23:53 status installed cowsay:all 3.03+dfsg2-8
+2026-07-10 18:23:53 remove cowsay:all 3.03+dfsg2-8 <none>
+2026-07-10 18:23:53 status half-configured cowsay:all 3.03+dfsg2-8
+2026-07-10 18:23:54 status half-installed cowsay:all 3.03+dfsg2-8
+2026-07-10 18:23:54 status config-files cowsay:all 3.03+dfsg2-8
+2026-07-10 18:23:54 status not-installed cowsay:all <none>
