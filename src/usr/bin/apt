@@ -8,11 +8,6 @@ APT_LISTS_DIR="/var/lib/apt/lists"
 APT_ARCHIVE_DIR="/var/cache/apt/archives"
 SOURCES_LIST="/etc/apt/sources.list"
 
-case ":${PATH}:" in
-    *:/sbin:*|*:/usr/sbin:*) ;;
-    *) export PATH="${PATH}:/sbin:/usr/sbin" ;;
-esac
-
 error() { echo "E: $*" >&2; }
 warn()  { echo "W: $*" >&2; }
 info()  { echo "I: $*"; }
@@ -120,8 +115,15 @@ cmd_update() {
 is_installed() {
     _pkg="$1"
     dpkg_ok=$(awk -v pkg="$_pkg" '/^Package: /{p=$2; s=""} p==pkg && /^Status: /{s=$0; exit} END{if(s && s ~ /install ok installed$/) print "yes"}' "$STATUS_DB" 2>/dev/null)
-    [ -n "$dpkg_ok" ] && return 0
-    pkg_has_files "$_pkg" && return 0
+    if [ -n "$dpkg_ok" ]; then
+        info "  [debug] is_installed($_pkg)=true (dpkg status)"
+        return 0
+    fi
+    if pkg_has_files "$_pkg"; then
+        info "  [debug] is_installed($_pkg)=true (files exist on disk)"
+        return 0
+    fi
+    info "  [debug] is_installed($_pkg)=false"
     return 1
 }
 
@@ -150,20 +152,13 @@ pkg_has_files() {
     esac
 }
 
-mark_auto_installed() {
-    _pkg="$1"
-    $BBOX sed -i "/^Package: $_pkg\$/,/^$/{/^Auto-Installed: yes/d}" "$STATUS_DB"
-    $BBOX sed -i "/^Package: $_pkg\$/,/^$/{/^Status: install ok installed$/a\\
-Auto-Installed: yes
-}" "$STATUS_DB"
-}
-
 install_pkg() {
     local pkg="$1"
-    local auto_installed="${2:-0}"
-    is_installed "$pkg" && return 0
+    info "  [debug] install_pkg($pkg): enter"
+    is_installed "$pkg" && { info "  [debug] install_pkg($pkg): already installed, skip"; return 0; }
 
     if pkg_has_files "$pkg"; then
+        info "  [debug] install_pkg($pkg): files exist on disk, marking as installed"
         if ! grep -q "^Package: $pkg\$" "$STATUS_DB" 2>/dev/null; then
             {
                 echo ""
@@ -183,12 +178,13 @@ install_pkg() {
     local found=0 pkg_filename="" pkg_version=""
     for f in $(pkg_list_files); do
         [ -f "$f" ] || continue
+        info "  [debug] install_pkg($pkg): searching in $(basename $f)"
         local in_pkg=0
         while IFS= read -r line; do
             case "$line" in
-                "Package: $pkg") in_pkg=1; pkg_version=""; pkg_filename="" ;;
+                "Package: $pkg") in_pkg=1; pkg_version=""; pkg_filename=""; info "  [debug]   found entry for $pkg" ;;
                 "Package: "*)
-                    [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ] && break
+                    [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ] && { info "  [debug]   found Filename=$pkg_filename, break"; break; }
                     in_pkg=0
                     ;;
                 "Version: "*)
@@ -198,7 +194,7 @@ install_pkg() {
                     [ "$in_pkg" -eq 1 ] && pkg_filename="${line#Filename: }"
                     ;;
                 "")
-                    [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ] && break
+                    [ "$in_pkg" -eq 1 ] && [ -n "$pkg_filename" ] && { info "  [debug]   found Filename=$pkg_filename at blank line, break"; break; }
                     in_pkg=0
                     ;;
             esac
@@ -209,14 +205,15 @@ install_pkg() {
         fi
     done
 
+    info "  [debug] install_pkg($pkg): found=$found, filename=$pkg_filename, version=$pkg_version"
     [ "$found" -eq 0 ] && { error "Package $pkg not found."; exit 1; }
-    info "Selecting $pkg..."
 
     local full_url="${repo_url}/${pkg_filename}"
     local deb_name="${pkg_filename##*/}"
     local deb_file="/tmp/${deb_name}"
 
     if [ -f "$APT_ARCHIVE_DIR/${deb_name}" ]; then
+        info "  [debug] install_pkg($pkg): using cached $deb_name"
         cp "$APT_ARCHIVE_DIR/${deb_name}" "$deb_file"
     else
         info "Downloading $pkg (${pkg_version:-unknown})..."
@@ -226,41 +223,41 @@ install_pkg() {
             exit 1
         fi
         cp "$deb_file" "$APT_ARCHIVE_DIR/" 2>/dev/null
+        info "  [debug] install_pkg($pkg): downloaded to $deb_file ($($BBOX wc -c < $deb_file) bytes)"
     fi
     info "Installing $pkg..."
     dpkg_out=$("$DPKG" -i "$deb_file" 2>&1)
     dpkg_rc=$?
-    [ $dpkg_rc -ne 0 ] && echo "$dpkg_out" | while IFS= read -r line; do info "  [dpkg] $line"; done
+    echo "$dpkg_out" | while IFS= read -r line; do info "  [dpkg] $line"; done
     if [ $dpkg_rc -ne 0 ]; then
+        warn "dpkg failed for $pkg (exit $dpkg_rc)"
         if pkg_has_files "$pkg"; then
             warn "Files already present, marking as installed despite dpkg error"
             rm -f "$deb_file"
             return 0
         fi
-        warn "Running dpkg --configure -a..."
-        dpkg_cfg=$("$DPKG" --configure -a 2>&1)
-        echo "$dpkg_cfg" | while IFS= read -r line; do info "  [dpkg] $line"; done
-        if pkg_has_files "$pkg"; then
-            [ "$auto_installed" = "1" ] && mark_auto_installed "$pkg"
-            rm -f "$deb_file"
-            return 0
-        fi
-        warn "Continuing despite dpkg error for $pkg"
-        touch /tmp/apt-dpkg-failed
+        error "Failed to install $pkg (dpkg exit code $dpkg_rc)"
         rm -f "$deb_file"
-        return $dpkg_rc
+        exit $dpkg_rc
     fi
-    [ "$auto_installed" = "1" ] && mark_auto_installed "$pkg"
+    info "  [debug] install_pkg($pkg): dpkg returned 0"
+    _configured=$(awk -v pkg="$pkg" '/^Package: /{p=$2} p==pkg && /^Status: /{if(/install ok installed$/) print 1}' "$STATUS_DB" 2>/dev/null)
+    if [ "$_configured" != "1" ]; then
+        warn "$pkg not fully configured after dpkg, running dpkg --configure..."
+        "$DPKG" --configure "$pkg" 2>&1 | while IFS= read -r line; do info "  [dpkg] $line"; done
+    fi
     rm -f "$deb_file"
 }
 
 resolve_deps() {
     local pkg="$1"
-    grep -qx "$pkg" "$MARKED_FILE" 2>/dev/null && return 0
+    info "  [debug] resolve_deps($pkg): enter"
+    grep -qx "$pkg" "$MARKED_FILE" 2>/dev/null && { info "  [debug] resolve_deps($pkg): already in marked, skip"; return 0; }
     echo "$pkg" >> "$MARKED_FILE"
 
     local deps=$(extract_depends "$pkg")
-    [ -z "$deps" ] && return 0
+    info "  [debug] resolve_deps($pkg): deps='$deps'"
+    [ -z "$deps" ] && { info "  [debug] resolve_deps($pkg): no deps"; return 0; }
 
     local pkg_files=""
     for f in $(ls "$APT_LISTS_DIR"/*_Packages 2>/dev/null); do
@@ -282,10 +279,13 @@ resolve_deps() {
         for alt in $(printf '%s' "$dep_group" | $BBOX tr '|' '\n'); do
             alt_name="$(printf '%s' "$alt" | $BBOX sed 's/:any$//; s/[[:space:]]*([^)]*)[[:space:]]*//g; s/^[[:space:]]*//;s/[[:space:]]*$//')"
             [ -z "$alt_name" ] && continue
-            is_installed "$alt_name" && { found=1; break; }
+            info "  [debug] resolve_deps($pkg): check dep '$alt_name'"
+            is_installed "$alt_name" && { info "  [debug] resolve_deps($pkg): '$alt_name' is installed, skip"; found=1; break; }
+            grep -qx "$alt_name" "$MARKED_FILE" 2>/dev/null && { info "  [debug] resolve_deps($pkg): '$alt_name' in marked, skip"; found=1; break; }
         done
         [ "$found" -eq 1 ] && continue
 
+        info "  [debug] resolve_deps($pkg): need to install '$alt_name'"
         local _resolved _providing
         for alt in $(printf '%s' "$dep_group" | $BBOX tr '|' '\n'); do
             alt_name="$(printf '%s' "$alt" | $BBOX sed 's/:any$//; s/[[:space:]]*([^)]*)[[:space:]]*//g; s/^[[:space:]]*//;s/[[:space:]]*$//')"
@@ -303,14 +303,9 @@ resolve_deps() {
                 done
             fi
             if [ -n "$_resolved" ]; then
-                if grep -qx "$_resolved" "$MARKED_FILE" 2>/dev/null; then
-                    info "Circular dep, installing $_resolved..."
-                    install_pkg "$_resolved" 1 || true
-                else
-                    info "Resolving $_resolved..."
-                    resolve_deps "$_resolved"
-                    install_pkg "$_resolved" 1
-                fi
+                info "  [debug] resolve_deps($pkg): resolving '$_resolved'..."
+                resolve_deps "$_resolved"
+                install_pkg "$_resolved"
                 found=1; break
             fi
         done
@@ -323,25 +318,20 @@ resolve_deps() {
 }
 
 cmd_install() {
-    local reinstall=0
-    local pkgs=""
-    for arg in "$@"; do
-        case "$arg" in
-            --reinstall) reinstall=1 ;;
-            *) pkgs="$pkgs $arg" ;;
-        esac
-    done
-    [ -z "$pkgs" ] && { error "No package name provided"; echo "Usage: apt install [--reinstall] <package>..."; exit 1; }
+    [ $# -eq 0 ] && { error "No package name provided"; echo "Usage: apt install <package>..."; exit 1; }
+    info "[debug] cmd_install: starting, packages: $*"
     ensure_dirs
 
     repo_url=$(get_repo_url)
+    info "[debug] cmd_install: repo_url='$repo_url'"
     [ -z "$repo_url" ] && { error "No repository found in sources.list"; exit 1; }
 
     MARKED_FILE="/tmp/apt-marked-$$"
     > "$MARKED_FILE"
+    info "[debug] cmd_install: MARKED_FILE=$MARKED_FILE"
 
-    for pkg in $pkgs; do
-        info "Processing $pkg..."
+    for pkg in "$@"; do
+        info "[debug] cmd_install: processing pkg=$pkg"
         case "$pkg" in
             /*|./*|../*)
                 if [ -f "$pkg" ]; then
@@ -359,7 +349,7 @@ cmd_install() {
                 continue
                 ;;
         esac
-        if [ "$reinstall" -eq 0 ] && is_installed "$pkg"; then
+        if is_installed "$pkg"; then
             info "$pkg is already installed"
             continue
         fi
@@ -367,13 +357,7 @@ cmd_install() {
         install_pkg "$pkg"
     done
     rm -f "$MARKED_FILE"
-    dpkg_cfg=$("$DPKG" --configure -a 2>&1)
-    [ -n "$dpkg_cfg" ] && echo "$dpkg_cfg" | while IFS= read -r line; do info "  [dpkg] $line"; done
-    if [ -f /tmp/apt-dpkg-failed ]; then
-        rm -f /tmp/apt-dpkg-failed
-        warn "Some packages may not be fully installed"
-    fi
-    info "Done"
+    info "Done installing packages"
 }
 
 cmd_remove() {
@@ -427,29 +411,11 @@ cmd_list() {
 
     if [ "$show_installed" -eq 1 ]; then
         [ -f "$STATUS_DB" ] || return
-        printf "%-28s %-22s %-6s %s\n" "Package" "Version" "Arch" "Description"
-        printf "%-28s %-22s %-6s %s\n" "-------" "-------" "----" "-----------"
-        $BBOX awk -F': ' '
-        /^Package: /        { pkg=$2 }
-        /^Status: /         { st=$0 }
-        /^Version: /        { ver=$2 }
-        /^Architecture: /   { arch=$2 }
-        /^Description: /    { desc=substr($0,13) }
-        pkg && /^$/ {
-            if (st ~ /install ok installed$/) {
-                if (length(desc) > 45) desc=substr(desc,1,42)"..."
-                printf "%s|%s|%s|%s\n", pkg, ver, arch, desc
-            }
-            pkg=""; ver=""; arch=""; desc=""; st=""
-        }
-        END {
-            if (pkg && st ~ /install ok installed$/) {
-                if (length(desc) > 45) desc=substr(desc,1,42)"..."
-                printf "%s|%s|%s|%s\n", pkg, ver, arch, desc
-            }
-        }
-        ' "$STATUS_DB" | $BBOX sort | while IFS='|' read -r pkg ver arch desc; do
-            printf "%-28s %-22s %-6s %s\n" "$pkg" "$ver" "$arch" "$desc"
+        printf "%-30s %-20s %s\n" "Package" "Version" "Description"
+        echo "----------------------------------------------------------------"
+        $BBOX sed -n '/^Package: /{N;N;/Status: install ok installed/{s/^Package: //;s/\nVersion: /|/;s/\n.*Description: /|/;p}}' "$STATUS_DB" | \
+        while IFS='|' read -r name ver desc; do
+            printf "%-30s %-20s %s\n" "$name" "$ver" "$desc"
         done
     else
         printf "%-30s %-20s %-10s %s\n" "Package" "Version" "Status" "Description"
@@ -526,59 +492,12 @@ cmd_show() {
 }
 
 cmd_autoremove() {
-    local purge=0
-    local args=""
-    for arg in "$@"; do
-        case "$arg" in
-            --purge|-P) purge=1 ;;
-            *) args="$args $arg" ;;
-        esac
-    done
     info "Checking for auto-removable packages..."
-    local auto_pkgs=$($BBOX sed -n '/^Package: /{s/^Package: //;h};/^Auto-Installed: yes/{g;p}' "$STATUS_DB" 2>/dev/null)
+    auto_pkgs=$($BBOX sed -n '/^Package: /{s/^Package: //;h};/^Auto-Installed: yes/{g;p}' "$STATUS_DB" 2>/dev/null)
     [ -z "$auto_pkgs" ] && { info "No packages to remove"; return; }
-
-    local needed_list=$($BBOX awk -v pkgs="$auto_pkgs" '
-    BEGIN { split(pkgs, ap); for (i in ap) needed[ap[i]]=0; install_ok=0 }
-    /^Package: / { pkg=$2; install_ok=0 }
-    /^Status: / && $0 ~ /install ok installed$/ { install_ok=1 }
-    install_ok && /^(Pre-)?Depends: / {
-        depfield=substr($0, index($0,": ")+2)
-        gsub(/:[a-z]+ /," ",depfield)
-        gsub(/\([^)]*\)/,"",depfield)
-        gsub(/,/,"",depfield)
-        gsub(/\|/,"",depfield)
-        gsub(/  +/," ",depfield)
-        gsub(/^ | $/,"",depfield)
-        for (i in ap) {
-            if (depfield ~ "(^| )" ap[i] "( |$)") needed[ap[i]]=1
-        }
-    }
-    END { for (n in needed) if (needed[n]==1) print n }
-    ' "$STATUS_DB" 2>/dev/null)
-
-    local protected_list=$($BBOX awk '/^Package: /{p=$2} /^Protected: yes/{print p}' "$STATUS_DB" 2>/dev/null)
-
-    local still_needed=""
-    local to_remove=""
-    for candidate in $auto_pkgs; do
-        if echo "$needed_list" | grep -qx "$candidate"; then
-            still_needed="$still_needed $candidate"
-        elif echo "$protected_list" | grep -qx "$candidate"; then
-            still_needed="$still_needed $candidate"
-        else
-            to_remove="$to_remove $candidate"
-        fi
-    done
-
-    local dpkg_cmd="$DPKG -r"
-    [ "$purge" -eq 1 ] && dpkg_cmd="$DPKG -P"
-
-    [ -n "$still_needed" ] && info "Still needed (skipped):$still_needed"
-    [ -z "$to_remove" ] && { info "No packages to remove"; return; }
-    info "Packages to remove: $to_remove"
-    for pkg in $to_remove; do
-        $dpkg_cmd "$pkg" 2>&1 || warn "Failed to remove $pkg"
+    info "Packages to remove: $auto_pkgs"
+    for pkg in $auto_pkgs; do
+        "$DPKG" -r "$pkg" 2>&1 || warn "Failed to remove $pkg"
     done
     info "Done"
 }
@@ -616,7 +535,7 @@ Commands:
   list --installed  - List installed packages
   search <pattern>  - Search for packages
   show <pkg>        - Show package details
-  autoremove        - Remove auto-installed unused packages (--purge to purge)
+  autoremove        - Remove auto-installed unused packages
   clean             - Clear downloaded package cache
   autoclean         - Remove obsolete package files
   help              - Show this help message
@@ -634,7 +553,7 @@ main() {
         list) shift; cmd_list "$@" ;;
         search) shift; cmd_search "$@" ;;
         show) shift; cmd_show "$@" ;;
-        autoremove) shift; cmd_autoremove "$@" ;;
+        autoremove) cmd_autoremove ;;
         clean) cmd_clean ;;
         autoclean) cmd_autoclean ;;
         help|--help|-h) cmd_help ;;
