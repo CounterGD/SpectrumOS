@@ -28,7 +28,7 @@ void launch_shell(void)
             NULL
         };
 
-        execv("/bin/bash", argv);
+        execv("/usr/bin/bash", argv);
 
         perror("execv");
         _exit(127);
