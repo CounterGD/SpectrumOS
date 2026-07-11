@@ -52,5 +52,5 @@ void setup_network(void)
 
     close(sockfd);
 
-    log_info("Network stack initialized (Stage 3 P1)");
+    log_info("Network stack initialized successfully");
 }

@@ -2,6 +2,7 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <stdio.h>
 
 #include "logger.h"
 
@@ -22,12 +23,14 @@ void launch_shell(void)
         setenv("PS1", "\\u@\\h:\\w\\$ ", 1);
 
         char *argv[] = {
-            "/bin/bash",
+            "/usr/bin/bash",
+            "-i",
             NULL
         };
 
         execv("/bin/bash", argv);
 
+        perror("execv");
         _exit(127);
     }
 
