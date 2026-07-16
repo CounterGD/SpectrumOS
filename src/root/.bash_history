@@ -1,12 +1,3 @@
-ls
-nano
-vi
-vim
-nano
-exit
-nano
-export TERM=linux
-nano
 ls /usr/share/terminfo
 exit
 nano
@@ -477,4 +468,33 @@ cowsay hello
 exit
 apt remove git
 apt autoremove
+exit
+fastfetch
+ls
+apt update
+fastfetch
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+sl
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+ls
+sl
 exit
